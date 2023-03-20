@@ -1,2 +1,2 @@
 # freeTalk
-React Native Mobile App Social, Education, Dating 
+React Native Mobile App for Social, Education and Dating 
