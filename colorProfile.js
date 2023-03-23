@@ -1,6 +1,6 @@
 const colors = {
-  controlColor1: '#663399',
-  controlColor2: '#663399',
+  ButtonColor1: '#663399',
+  ButtonTextColor1: '#ffffff',
 
   textColor1: '#000000',
   textColor2: '#ffffff',

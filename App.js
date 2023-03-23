@@ -17,7 +17,10 @@ import {
   Alert,
 } from 'react-native';
 
+import CustomButton from './CustomButton';
+
 import colors from './colorProfile';
+//import CustomButton from './CustomButton';
 
 const App = () => {
   const [modalVisible, setmodalVisible] = useState(true);
@@ -88,7 +91,11 @@ const App = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <TouchableOpacity
+              <CustomButton
+                title="CONFIRM"
+                onPressFunction={confirmPress}></CustomButton>
+
+              {/* <TouchableOpacity
                 style={{width: '100%', alignItems: 'center'}}
                 onPress={confirmPress}>
                 <Text
@@ -99,7 +106,7 @@ const App = () => {
                   }}>
                   CONFIRM
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
