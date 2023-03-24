@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import colors from './colorProfile';
+import colors from '../config/colorProfile';
 
 const Header = props => {
   return (

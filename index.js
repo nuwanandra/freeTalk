@@ -3,11 +3,13 @@
  */
 
 import {AppRegistry, Alert} from 'react-native';
-//import App from './App';
-//import App from './CustomButton';
-import App from './Header';
-
 import {name as appName} from './app.json';
+
+//import App from './src/screens/TermsAndConditions';
+import App from './src/screens/App';
+//import App from './src/screens/Settings';
+//import App from './src/screens/App';
+//import App from './src/screens/App';
 
 // const GreetingProps = {
 //   title: 'dffdfdfdfdf',
