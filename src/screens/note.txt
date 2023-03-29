@@ -1,0 +1,8 @@
+AsyncStorage==================
+    userName
+    gender
+    dateUserCreated
+    avatar
+    level
+    language
+    confirmed

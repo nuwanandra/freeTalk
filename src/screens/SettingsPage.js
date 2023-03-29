@@ -1,5 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
-
 import {
   SafeAreaView,
   ScrollView,
@@ -18,38 +18,74 @@ import {
   TextInput,
 } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {RadioButton} from 'react-native-paper';
-
 import colors from '../config/colorProfile';
-
 import CustomButton from '../utils/CustomButton';
-import PrivacyPolicy from '../utils/PrivacyPolicy';
-import Header from '../utils/Header';
 
 export default function SettingsPage({navigation}, props) {
-  //   const [modalVisible, setmodalVisible] = useState(true);
-  //   const confirmPress = () => {
-  //     Alert.alert('Confirmed');
-  //     setmodalVisible(false);
-  //   };
+  useEffect(() => {
+    //deleteData();
+    getData();
+  }, []);
 
   const [userName, setUserName] = useState('');
-  const [gender, setGender] = useState(''); //initial choice
-  const [dateUserCreated, setDateUserCreated] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [level, setLevel] = useState('');
-  const [language, setLanguage] = useState('');
+  const [gender, setGender] = useState('');
+  const [dateUserCreated, setDateUserCreated] = useState(
+    new Date().toLocaleString(),
+  );
+  const [avatar, setAvatar] = useState('1');
+  const [level, setLevel] = useState('beginner');
+  const [language, setLanguage] = useState('English');
+  const [confirmed, setConfirmed] = useState(true);
 
-  const onSave = async () => {
+  const getData = async () => {
+    Alert.alert('settings page:getData');
+    try {
+      await AsyncStorage.getItem('userData').then(val => {
+        if (val != null) {
+          let user = JSON.parse(val);
+
+          if (user.dateUserCreated.length > 0) {
+            setDateUserCreated(user.dateUserCreated);
+          }
+
+          setUserName(user.userName);
+          setGender(user.gender);
+          setAvatar(user.avatar);
+          setLevel(user.level);
+          setLanguage(user.language);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setData = async () => {
+    Alert.alert('settings page:setData');
     if (userName.trim().length == 0) {
       Alert.alert('Warning!', 'Insert your user name.');
     } else if (gender.trim().length == 0) {
-      Alert.alert('Warning!', 'Insert your gender.');
+      Alert.alert('Warning!', 'Select your gender.');
+    } else if (avatar.trim().length == 0) {
+      Alert.alert('Warning!', 'Select avatar.');
+    } else if (level.trim().length == 0) {
+      Alert.alert('Warning!', 'Select level.');
     } else {
       try {
-        await AsyncStorage.setItem('userName', userName);
+        //const currentDate = new Date();
+
+        let user = {
+          userName: userName,
+          gender: gender,
+          dateUserCreated: dateUserCreated,
+          avatar: avatar,
+          level: level,
+          language: language,
+          confirmed: confirmed,
+        };
+
+        await AsyncStorage.setItem('userData', JSON.stringify(user));
 
         Alert.alert('Successful', 'Data Saved.');
         navigation.navigate('free Talk');
@@ -59,30 +95,46 @@ export default function SettingsPage({navigation}, props) {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const updateData = async (name, value) => {
+    Alert.alert('settings page:updateData');
+    if (value.trim().length == 0) {
+      Alert.alert('Warning!', {name} + ' is empty or null');
+    } else {
+      try {
+        //const currentDate = new Date();
 
-  const getData = async () => {
-    Alert.alert('home page');
+        let user = {
+          [name]: value,
+        };
+
+        await AsyncStorage.mergeItem('userData', JSON.stringify(user));
+
+        Alert.alert('Successful', 'Data Updated.');
+        navigation.navigate('free Talk');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const deleteData = async name => {
     try {
-      await AsyncStorage.getItem('userName').then(val => {
-        if (val != null) {
-          setUserName(val);
-        }
-      });
+      if (name.trim().length > 0) {
+        await AsyncStorage.removeItem(name);
+      } else {
+        await AsyncStorage.clear();
+      }
+
+      Alert.alert('Successful', 'AsyncStorage Cleared.');
     } catch (error) {
       console.log(error);
     }
   };
 
-  const clearStorage = async () => {
-    try {
-      await AsyncStorage.clear();
-      alert('Storage successfully cleared!');
-    } catch (e) {
-      alert('Failed to clear the async storage.');
-    }
+  const onSave = async () => {
+    //setData();
+    //updateData('userName', 'amal');
+    deleteData('userData');
   };
 
   return (
@@ -123,7 +175,7 @@ export default function SettingsPage({navigation}, props) {
           <Text>Male</Text>
         </View>
 
-        {/* <Text> {gender}</Text> */}
+        <Text> {dateUserCreated}</Text>
       </View>
 
       <View style={{width: '50%', flexDirection: 'column', paddingTop: 20}}>

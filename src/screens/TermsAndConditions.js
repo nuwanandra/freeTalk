@@ -1,11 +1,71 @@
-import React, {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState, useEffect} from 'react';
 
-import {Text, View, Modal, Linking} from 'react-native';
+import {Text, View, Modal, Linking, Alert} from 'react-native';
 import colors from '../config/colorProfile';
 import CustomButton from '../utils/CustomButton';
-import Header from '../utils/Header';
 
 export default function TermsAndConditions({navigation}, props) {
+  useEffect(() => {
+    //clearStorage();
+    getData();
+  }, []);
+
+  const [confirmed, setConfirmed] = useState();
+
+  const getData = async () => {
+    Alert.alert('TermsAndConditions page:getData');
+    try {
+      await AsyncStorage.getItem('userData').then(val => {
+        if (val != null) {
+          //let user = JSON.parse(val);
+          setConfirmed(true);
+          navigation.navigate('free Talk');
+        } else {
+          setConfirmed(false);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateData = async (name, value) => {
+    Alert.alert('settings page:updateData');
+    if (value.trim().length == 0) {
+      Alert.alert('Warning!', {name} + ' is empty or null');
+    } else {
+      try {
+        //const currentDate = new Date();
+
+        let user = {
+          name: value,
+        };
+
+        await AsyncStorage.mergeItem('userData', JSON.stringify(user));
+
+        //Alert.alert('Successful', 'Data Updated.');
+        //navigation.navigate('free Talk');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const deleteData = async () => {
+    try {
+      await AsyncStorage.clear();
+      alert('Storage successfully cleared!');
+    } catch (e) {
+      alert('Failed to clear the async storage.');
+    }
+  };
+
+  const confirmFunction = () => {
+    //Alert.alert('sssss');
+    updateData('confirmed', true);
+  };
+
   return (
     <View
       style={{
@@ -77,8 +137,8 @@ export default function TermsAndConditions({navigation}, props) {
             alignItems: 'center',
           }}>
           <CustomButton
-            title={'CONFIRM'}
-            onPressFunction={props.confirmPress}
+            title={confirmed === false ? 'CONFIRM' : 'CONFIRMED'}
+            onPressFunction={confirmFunction}
             radius={0}></CustomButton>
         </View>
       </View>
