@@ -10,15 +10,16 @@ const CustomButton = props => {
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.ButtonColor1,
+        backgroundColor: colors.buttonColor1,
         height: 50,
+        borderRadius: props.radius,
       }}
       onPress={props.onPressFunction}>
       <Text
         style={{
           fontSize: 20,
           //fontWeight: 'bold',
-          color: colors.ButtonTextColor1,
+          color: colors.buttonTextColor1,
         }}>
         {props.title}
       </Text>

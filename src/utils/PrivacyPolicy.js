@@ -61,7 +61,7 @@ const PrivacyPolicy = props => {
               position: 'absolute',
               height: 50,
               width: '100%',
-              backgroundColor: colors.ThemeColor1,
+              backgroundColor: colors.themeColor1,
               justifyContent: 'center',
               alignItems: 'center',
             }}>

@@ -7,13 +7,13 @@ const Header = props => {
     <View
       id="Header"
       style={{
-        backgroundColor: colors.ThemeColor1,
+        backgroundColor: colors.themeColor1,
         height: 60,
         justifyContent: 'center',
       }}>
       <Text
         style={{
-          color: colors.ThemeTextColor1,
+          color: colors.themeTextColor1,
           fontWeight: 'bold',
           fontSize: 30,
           marginLeft: 60,

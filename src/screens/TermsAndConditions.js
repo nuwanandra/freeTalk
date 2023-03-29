@@ -5,7 +5,7 @@ import colors from '../config/colorProfile';
 import CustomButton from '../utils/CustomButton';
 import Header from '../utils/Header';
 
-export default function TermsAndConditions({navigation}) {
+export default function TermsAndConditions({navigation}, props) {
   return (
     <View
       style={{
@@ -20,6 +20,7 @@ export default function TermsAndConditions({navigation}) {
           width: 300,
           height: 300,
           backgroundColor: colors.backGroundColor1,
+          //borderRadius: 5,
         }}>
         <View
           id="warnTitle"
@@ -77,7 +78,8 @@ export default function TermsAndConditions({navigation}) {
           }}>
           <CustomButton
             title={'CONFIRM'}
-            onPressFunction={props.confirmPress}></CustomButton>
+            onPressFunction={props.confirmPress}
+            radius={0}></CustomButton>
         </View>
       </View>
     </View>

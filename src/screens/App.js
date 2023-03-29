@@ -3,9 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-//const stack = createDrawerNavigator();
-const stack = createNativeStackNavigator();
-
 import React, {useState} from 'react';
 
 import {
@@ -33,6 +30,9 @@ import TermsAndConditions from './TermsAndConditions';
 import Home from './Home';
 import SettingsPage from './SettingsPage';
 
+const drawer = createDrawerNavigator();
+//const stack = createNativeStackNavigator();
+
 const App = () => {
   // const [modalVisible, setmodalVisible] = useState(true);
   // const confirmPress = () => {
@@ -42,28 +42,41 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <stack.Navigator>
-        <stack.Screen
+      <drawer.Navigator
+        initialRouteName="free Talk"
+        screenOptions={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors.themeColor1,
+          },
+          headerTintColor: colors.themeTextColor1,
+          headerTitleStyle: {
+            fontSize: 25,
+          },
+        }}>
+        <drawer.Screen
           name="free Talk"
           component={Home}
           options={{drawerLabel: 'Home'}}
         />
-        <stack.Screen
+
+        <drawer.Screen
           name="Settings"
           component={SettingsPage}
           options={{drawerLabel: 'Settings'}}
         />
-        <stack.Screen
+
+        <drawer.Screen
           name="Terms And Conditions"
           component={TermsAndConditions}
           options={{drawerLabel: 'Terms And Conditions'}}
         />
-        {/* <stack.Screen
+        {/* <drawer.Screen
           name="Terms And Conditions"
           component={TermsAndConditions}
           options={{drawerLabel: 'Terms And Conditions', header: () => null}}
         /> */}
-      </stack.Navigator>
+      </drawer.Navigator>
     </NavigationContainer>
   );
 };

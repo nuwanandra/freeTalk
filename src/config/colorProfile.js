@@ -1,6 +1,6 @@
 const colors = {
-  ButtonColor1: '#663399',
-  ButtonTextColor1: '#ffffff',
+  buttonColor1: '#663399',
+  buttonTextColor1: '#ffffff',
 
   textColor1: '#000000',
   textColor2: '#ffffff',
@@ -9,9 +9,11 @@ const colors = {
   backGroundColor1: '#ffffff',
   //backGroundColor2:'',
 
-  ThemeColor1: '#663399',
-  ThemeTextColor1: '#ffffff',
+  themeColor1: '#663399',
+  themeTextColor1: '#ffffff',
   //ThemeColor2
+
+  textInputBorderColor1: '#999999',
 
   transparentBackgroundColor1: '#4D4D4D99', // last two digit reprecent transparency of any color(00 => 0%, 99 => 60%, FF=> 100% ) https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
 };
