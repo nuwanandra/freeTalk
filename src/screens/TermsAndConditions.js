@@ -1,3 +1,5 @@
+import 'react-native-gesture-handler';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 
@@ -5,24 +7,37 @@ import {Text, View, Modal, Linking, Alert} from 'react-native';
 import colors from '../config/colorProfile';
 import CustomButton from '../utils/CustomButton';
 
-export default function TermsAndConditions({navigation}, props) {
+export default function TermsAndConditions({navigation, route}) {
   useEffect(() => {
-    //clearStorage();
     getData();
+    //deleteData('');
   }, []);
 
+  const [user, setUser] = useState('');
   const [confirmed, setConfirmed] = useState();
+  const [userName, setUserName] = useState('');
 
   const getData = async () => {
-    Alert.alert('TermsAndConditions page:getData');
     try {
       await AsyncStorage.getItem('userData').then(val => {
-        if (val != null) {
-          //let user = JSON.parse(val);
-          setConfirmed(true);
-          navigation.navigate('free Talk');
+        if (val != null && val != '') {
+          let userOb = JSON.parse(val);
+          setUser(val);
+          setUserName(userOb.userName.trim());
         } else {
-          setConfirmed(false);
+          let userOb = {
+            userName: '',
+            gender: '',
+            dateFirstCall: '',
+            dateFirstOpen: new Date().toLocaleDateString(),
+            avatar: 0,
+            level: 'Beginner',
+            language: 'English',
+            confirmed: 'false',
+          };
+
+          setUser(JSON.stringify(userOb));
+          AsyncStorage.setItem('userData', JSON.stringify(userOb));
         }
       });
     } catch (error) {
@@ -30,8 +45,22 @@ export default function TermsAndConditions({navigation}, props) {
     }
   };
 
+  const deleteData = async itemName => {
+    try {
+      if (itemName.trim().length > 0) {
+        await AsyncStorage.removeItem(itemName);
+      } else {
+        await AsyncStorage.clear();
+      }
+
+      Alert.alert('Successful', 'AsyncStorage Cleared.');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const updateData = async (name, value) => {
-    Alert.alert('settings page:updateData');
+    //Alert.alert('settings page:updateData');
     if (value.trim().length == 0) {
       Alert.alert('Warning!', {name} + ' is empty or null');
     } else {
@@ -39,31 +68,27 @@ export default function TermsAndConditions({navigation}, props) {
         //const currentDate = new Date();
 
         let user = {
-          name: value,
+          [name]: value,
         };
 
         await AsyncStorage.mergeItem('userData', JSON.stringify(user));
 
-        //Alert.alert('Successful', 'Data Updated.');
-        //navigation.navigate('free Talk');
+        Alert.alert('Successful', 'Data Updated.');
+        navigation.navigate('free Talk');
       } catch (error) {
         console.log(error);
       }
     }
   };
 
-  const deleteData = async () => {
-    try {
-      await AsyncStorage.clear();
-      alert('Storage successfully cleared!');
-    } catch (e) {
-      alert('Failed to clear the async storage.');
-    }
-  };
-
   const confirmFunction = () => {
-    //Alert.alert('sssss');
-    updateData('confirmed', true);
+    setConfirmed(true);
+
+    if (userName.length > 0) {
+      navigation.navigate('free Talk', {UserJSON: user, ItemID: 1});
+    } else {
+      navigation.navigate('Settings', {UserJSON: user, ItemID: 1});
+    }
   };
 
   return (
@@ -128,7 +153,7 @@ export default function TermsAndConditions({navigation}, props) {
         <View
           id="confirmButton"
           style={{
-            bottom: 0,
+            bottom: -1,
             position: 'absolute',
             height: 50,
             width: '100%',
@@ -137,9 +162,12 @@ export default function TermsAndConditions({navigation}, props) {
             alignItems: 'center',
           }}>
           <CustomButton
-            title={confirmed === false ? 'CONFIRM' : 'CONFIRMED'}
+            title={confirmed === 'false' ? 'CONFIRM' : 'CONFIRMED'}
+            //title={'CONFIRM'}
             onPressFunction={confirmFunction}
-            radius={0}></CustomButton>
+            radius={0}>
+            {' '}
+          </CustomButton>
         </View>
       </View>
     </View>

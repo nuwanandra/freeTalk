@@ -1,6 +1,6 @@
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -24,16 +24,19 @@ import colors from '../config/colorProfile';
 import CustomButton from '../utils/CustomButton';
 import Header from '../utils/Header';
 
-export default function Home({navigation}, props) {
-  // const [modalVisible, setmodalVisible] = useState(true);
+export default function Home({navigation, route}) {
+  const {UserJSON, ItemID} = route.params;
+  const [UserOb, setUserOb] = useState(JSON.parse(UserJSON));
 
   const [userName, setUserName] = useState('');
 
   const gotoSettings = () => {
-    Alert.alert('clicked');
+    //Alert.alert('clicked');
     //setmodalVisible(false);
     //props.navigate('SettingsPage');
     //navigation.navigate('Settings');
+
+    navigation.navigate('Settings', {UserJSON: UserJSON, ItemID: 1});
   };
 
   // useEffect(() => {
@@ -42,12 +45,16 @@ export default function Home({navigation}, props) {
 
   return (
     <SafeAreaView
-      style={{
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-      }}>
+      style={
+        {
+          //paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        }
+      }>
       <StatusBar hidden={false}></StatusBar>
       <Text>Home. Welcome to {userName}</Text>
-      <CustomButton title="go to" onPressFunction={gotoSettings}></CustomButton>
+      <CustomButton
+        title="Settings"
+        onPressFunction={gotoSettings}></CustomButton>
     </SafeAreaView>
   );
 }

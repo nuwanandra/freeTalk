@@ -23,7 +23,7 @@ import CustomButton from '../utils/CustomButton';
 import PrivacyPolicy from '../utils/PrivacyPolicy';
 import Header from '../utils/Header';
 
-export default function Login({navigation}, props) {
+export default function Login({navigation, route}) {
   //   const [modalVisible, setmodalVisible] = useState(true);
   //   const confirmPress = () => {
   //     Alert.alert('Confirmed');

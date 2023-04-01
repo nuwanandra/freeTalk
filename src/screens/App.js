@@ -3,7 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import React, {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -29,21 +31,18 @@ import colors from '../config/colorProfile';
 import TermsAndConditions from './TermsAndConditions';
 import Home from './Home';
 import SettingsPage from './SettingsPage';
+import AvatarPage from './AvatarPage';
 
-const drawer = createDrawerNavigator();
-//const stack = createNativeStackNavigator();
+//const drawer = createDrawerNavigator();
+const drawer = createNativeStackNavigator();
 
-const App = () => {
-  // const [modalVisible, setmodalVisible] = useState(true);
-  // const confirmPress = () => {
-  //   Alert.alert('Confirmed');
-  //   setmodalVisible(false);
-  // };
+const App = ({navigation, route}) => {
+  //const {UserJSON, ItemID} = route.params;
 
   return (
     <NavigationContainer>
       <drawer.Navigator
-        initialRouteName="free Talk"
+        initialRouteName="Terms And Conditions"
         screenOptions={{
           headerShown: true,
           headerStyle: {
@@ -58,19 +57,30 @@ const App = () => {
           name="free Talk"
           component={Home}
           options={{drawerLabel: 'Home'}}
+          //initialParams={{params: route.params}}
         />
 
         <drawer.Screen
           name="Settings"
           component={SettingsPage}
           options={{drawerLabel: 'Settings'}}
+          //initialParams={{ItemName: user, ItemID: 1}}
+        />
+        <drawer.Screen
+          name="Avatar"
+          component={AvatarPage}
+          options={{drawerLabel: 'Avatar'}}
+          //initialParams={{ItemName: user, ItemID: 3}}
         />
 
         <drawer.Screen
           name="Terms And Conditions"
           component={TermsAndConditions}
           options={{drawerLabel: 'Terms And Conditions'}}
+
+          //initialParams={{ItemName: user, ItemID: 4}}
         />
+
         {/* <drawer.Screen
           name="Terms And Conditions"
           component={TermsAndConditions}
